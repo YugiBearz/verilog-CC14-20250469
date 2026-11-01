@@ -1,0 +1,19 @@
+# Salidas de simulacion y compilacion
+sim/*.vcd
+sim/*.vvp
+sim/*.out
+sim/sim_top
+sim/sim_k5
+sim_top
+sim_k5
+*.vvp
+*.vcd
+
+# Gowin EDA y temporales
+build/
+impl/
+*.fs
+*.bin
+*.log
+.DS_Store
+Thumbs.db
