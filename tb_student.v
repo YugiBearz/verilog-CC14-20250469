@@ -52,13 +52,66 @@ module tb_student;
     // ------------------------------------------------------------------------
     always #(CLK_PERIOD / 2) clk = ~clk;
 
+    // ------------------------------------------------------------------------
+    // Tarea de verificacion de salidas (evaluada 1 ns despues de posedge clk)
+    // ------------------------------------------------------------------------
+    task check_outputs;
+        input [3:0] exp_note;
+        input [2:0] exp_count;
+        input       exp_push_ok;
+        input       exp_pop_ok;
+        input [255:0] test_name;
+        begin
+            #1; // Comparacion estricta 1 ns despues del flanco positivo
+            total_tests = total_tests + 1;
+            if (y_unused !== 7'b0000000) begin
+                $display("[ERROR][Ciclo %0d] %0s: y[15:9] no es cero. Obtenido=%b", cycle_count, test_name, y_unused);
+                fail_tests = fail_tests + 1;
+            end else if (y_last_note !== exp_note || y_count !== exp_count ||
+                         y_push_ok !== exp_push_ok || y_pop_ok !== exp_pop_ok) begin
+                $display("[ERROR][Ciclo %0d] %0s: FALLO!", cycle_count, test_name);
+                $display("       Esperado: note=%0d, count=%0d, push_ok=%0b, pop_ok=%0b", exp_note, exp_count, exp_push_ok, exp_pop_ok);
+                $display("       Obtenido: note=%0d, count=%0d, push_ok=%0b, pop_ok=%0b (y=0x%04h)", y_last_note, y_count, y_push_ok, y_pop_ok, y);
+                fail_tests = fail_tests + 1;
+            end else begin
+                pass_tests = pass_tests + 1;
+            end
+        end
+    endtask
+
+    // Tarea para avanzar un ciclo con entradas especificadas
+    task step_cycle;
+        input       t_rst;
+        input       t_en;
+        input [7:0] t_cmd;
+        input [7:0] t_data;
+        begin
+            @(negedge clk);
+            rst  = t_rst;
+            en   = t_en;
+            cmd  = t_cmd;
+            data = t_data;
+            @(posedge clk);
+            cycle_count = cycle_count + 1;
+        end
+    endtask
+
     initial begin
-        clk = 0;
-        rst = 1;
-        en  = 0;
-        cmd = 8'h00;
-        data = 8'h00;
-        #20;
+        clk         = 0;
+        rst         = 1;
+        en          = 1;
+        cmd         = 8'h00;
+        data        = 8'h00;
+        total_tests = 0;
+        pass_tests  = 0;
+        fail_tests  = 0;
+        cycle_count = 0;
+
+        // Reset inicial
+        step_cycle(1'b1, 1'b1, 8'h00, 8'h00);
+        check_outputs(4'd0, 3'd0, 1'b0, 1'b0, "Reset Inicial");
+        #10;
+        $finish;
     end
 
 endmodule
