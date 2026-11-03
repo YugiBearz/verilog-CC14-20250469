@@ -144,6 +144,26 @@ module tb_student;
         step_cycle(1'b1, 1'b1, 8'h03, 8'h0F);
         check_outputs(4'd0, 3'd0, 1'b0, 1'b0, "G1: Reset con FIFO llena y last_note!=0");
 
+        // --------------------------------------------------------------------
+        // GRUPO G2: Orden FIFO de varias notas y vuelta de punteros (Wrap-around)
+        // --------------------------------------------------------------------
+        $display("--- Grupo G2: Orden FIFO y vuelta de punteros circulares ---");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0A); check_outputs(4'd0, 3'd1, 1'b1, 1'b0, "G2: Push A");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0B); check_outputs(4'd0, 3'd2, 1'b1, 1'b0, "G2: Push B");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0C); check_outputs(4'd0, 3'd3, 1'b1, 1'b0, "G2: Push C");
+
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd10, 3'd2, 1'b0, 1'b1, "G2: Pop A");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd11, 3'd1, 1'b0, 1'b1, "G2: Pop B");
+
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0D); check_outputs(4'd11, 3'd2, 1'b1, 1'b0, "G2: Push D");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0E); check_outputs(4'd11, 3'd3, 1'b1, 1'b0, "G2: Push E (Wrap wr)");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0F); check_outputs(4'd11, 3'd4, 1'b1, 1'b0, "G2: Push F (Lleno)");
+
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd12, 3'd3, 1'b0, 1'b1, "G2: Pop C");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd13, 3'd2, 1'b0, 1'b1, "G2: Pop D");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd14, 3'd1, 1'b0, 1'b1, "G2: Pop E (Wrap rd)");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd15, 3'd0, 1'b0, 1'b1, "G2: Pop F (Vacio)");
+
         #10;
         $finish;
     end
