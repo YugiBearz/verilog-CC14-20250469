@@ -77,8 +77,20 @@ module top_module #(
                         // Si count == 0: pop rechazado (pop_ok = 0, last_note retiene su valor)
                     end
 
+                    2'b10: begin
+                        // Solo PUSH solicitado:
+                        // Se acepta si habia espacio (count < 4)
+                        if (count < 3'd4) begin
+                            mem[wr_ptr] <= in_note;
+                            wr_ptr      <= wr_ptr + 1'b1;
+                            count       <= count + 1'b1;
+                            push_ok     <= 1'b1;
+                        end
+                        // Si count == 4: push rechazado (push_ok = 0)
+                    end
+
                     default: begin
-                        // PUSH y transferencias simultaneas en siguientes commits
+                        // Transferencias simultaneas en siguiente commit
                     end
                 endcase
             end
