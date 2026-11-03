@@ -39,4 +39,29 @@ module top_module #(
     reg push_ok;
     reg pop_ok;
 
+    // ------------------------------------------------------------------------
+    // Logica secuencial sincrona gobernada por clk
+    // ------------------------------------------------------------------------
+    always @(posedge clk) begin
+        if (rst) begin
+            // 1. Reset sincrono prioritario:
+            // Cola vacia, ultima nota = 0, y ambas aceptaciones = 0
+            wr_ptr    <= 2'b00;
+            rd_ptr    <= 2'b00;
+            count     <= 3'b000;
+            last_note <= 4'b0000;
+            push_ok   <= 1'b0;
+            pop_ok    <= 1'b0;
+        end else begin
+            // Regla estricta del contrato:
+            // "Las aceptaciones se borran cada flanco incluso con en=0."
+            push_ok <= 1'b0;
+            pop_ok  <= 1'b0;
+
+            if (en) begin
+                // Operaciones PUSH y POP a implementar en siguientes commits
+            end
+        end
+    end
+
 endmodule
