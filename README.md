@@ -28,5 +28,5 @@ Diseño, implementación y verificación en Verilog 2001 de una cola síncrona F
 - [x] **Fase 1: Bitácora y Arquitectura Base** — Registro obligatorio en `AI_LOG.md` y definición de interfaz parametrizada en `top_module.v`.
 - [x] **Fase 2: Implementación RTL (FIFO)** — Memoria interna de 4 notas, punteros circulares, reset prioritario, PUSH, POP y transferencias simultáneas.
 - [x] **Fase 3: Herramientas y Automatización** — Reglas de `Makefile` (`check`, `check-k5`, `lint`, `clean`) y tareas de VS Code.
-- [ ] **Fase 4: Verificación Exhaustiva (G1 a G6)** — Banco `tb_student.v`, casos límite, colisiones y 900 ciclos aleatorios con modelo de oro.
+- [x] **Fase 4: Verificación Exhaustiva (G1 a G6)** — Banco `tb_student.v`, casos límite, colisiones y 900 ciclos aleatorios con modelo de oro.
 - [ ] **Fase 5: Parametricidad K=5 y Documentación** — Validación de portabilidad con K=5, análisis en `docs/` y archivo de entregables final.
