@@ -164,6 +164,43 @@ module tb_student;
         step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd14, 3'd1, 1'b0, 1'b1, "G2: Pop E (Wrap rd)");
         step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd15, 3'd0, 1'b0, 1'b1, "G2: Pop F (Vacio)");
 
+        // --------------------------------------------------------------------
+        // GRUPO G3: Vacio, lleno, push rechazado y pop rechazado
+        // --------------------------------------------------------------------
+        $display("--- Grupo G3: Rechazos en vacio y en lleno ---");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00);
+        check_outputs(4'd15, 3'd0, 1'b0, 1'b0, "G3: Pop rechazado en vacio");
+
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h01); check_outputs(4'd15, 3'd1, 1'b1, 1'b0, "G3: Push 1");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h02); check_outputs(4'd15, 3'd2, 1'b1, 1'b0, "G3: Push 2");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h03); check_outputs(4'd15, 3'd3, 1'b1, 1'b0, "G3: Push 3");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h04); check_outputs(4'd15, 3'd4, 1'b1, 1'b0, "G3: Push 4 (Lleno)");
+
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h09);
+        check_outputs(4'd15, 3'd4, 1'b0, 1'b0, "G3: Push rechazado en lleno");
+
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd1, 3'd3, 1'b0, 1'b1, "G3: Vaciar 1");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd2, 3'd2, 1'b0, 1'b1, "G3: Vaciar 2");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd3, 3'd1, 1'b0, 1'b1, "G3: Vaciar 3");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd4, 3'd0, 1'b0, 1'b1, "G3: Vaciar 4");
+
+        // --------------------------------------------------------------------
+        // GRUPO G4: Push + Pop simultaneos (Vacio, media ocupacion y lleno)
+        // --------------------------------------------------------------------
+        $display("--- Grupo G4: Transferencias simultaneas (Push+Pop) ---");
+        step_cycle(1'b0, 1'b1, 8'h03, 8'h07);
+        check_outputs(4'd4, 3'd1, 1'b1, 1'b0, "G4: Push+Pop en vacio (Solo push)");
+
+        step_cycle(1'b0, 1'b1, 8'h03, 8'h08);
+        check_outputs(4'd7, 3'd1, 1'b1, 1'b1, "G4: Push+Pop en media (count=1)");
+
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h09); check_outputs(4'd7, 3'd2, 1'b1, 1'b0, "G4: Llenando (count=2)");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0A); check_outputs(4'd7, 3'd3, 1'b1, 1'b0, "G4: Llenando (count=3)");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h0B); check_outputs(4'd7, 3'd4, 1'b1, 1'b0, "G4: Llenando (count=4)");
+
+        step_cycle(1'b0, 1'b1, 8'h03, 8'h0C);
+        check_outputs(4'd8, 3'd4, 1'b1, 1'b1, "G4: Push+Pop en lleno (count=4)");
+
         #10;
         $finish;
     end
