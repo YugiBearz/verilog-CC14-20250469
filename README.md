@@ -29,4 +29,34 @@ Diseño, implementación y verificación en Verilog 2001 de una cola síncrona F
 - [x] **Fase 2: Implementación RTL (FIFO)** — Memoria interna de 4 notas, punteros circulares, reset prioritario, PUSH, POP y transferencias simultáneas.
 - [x] **Fase 3: Herramientas y Automatización** — Reglas de `Makefile` (`check`, `check-k5`, `lint`, `clean`) y tareas de VS Code.
 - [x] **Fase 4: Verificación Exhaustiva (G1 a G6)** — Banco `tb_student.v`, casos límite, colisiones y 900 ciclos aleatorios con modelo de oro.
-- [ ] **Fase 5: Parametricidad K=5 y Documentación** — Validación de portabilidad con K=5, análisis en `docs/` y archivo de entregables final.
+- [x] **Fase 5: Parametricidad K=5 y Documentación** — Validación de portabilidad con K=5, análisis en `docs/` y archivo de entregables final.
+
+---
+
+### Instrucciones de Reproducción y Verificación
+
+#### Opción A: Desde la Terminal (Makefile)
+```bash
+make check      # Simulación con K=3 (945 pruebas)
+make check-k5   # Simulación con K=5 (945 pruebas)
+make lint       # Verificación estática con Verilator
+make clean      # Limpieza de ejecutables
+```
+
+#### Opción B: Comando Oficial del Profesor
+```bash
+iverilog -g2012 -s tb_student -o sim top_module.v tb_student.v
+vvp sim
+```
+
+### Matriz de Verificación (100% PASS)
+| Grupo | Caso de Prueba | Aserciones | Estado |
+| :--- | :--- | :---: | :---: |
+| G0 | Reset Inicial y Ejemplo Oficial | 6 | PASS |
+| G1 | Reset con FIFO Llena | 5 | PASS |
+| G2 | Orden FIFO y Envoltura Circular | 11 | PASS |
+| G3 | Rechazos en Frontera (Vacío / Lleno) | 10 | PASS |
+| G4 | Transferencias Simultáneas (Push+Pop) | 6 | PASS |
+| G5 | Pausa con `en=0` y Supresión de Pulsos | 6 | PASS |
+| G6 | 900 Ciclos Aleatorios con Modelo de Oro | 901 | PASS |
+| **Total** | **Verificación Completa (K=3 y K=5)** | **945** | **100% PASS** |
