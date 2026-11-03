@@ -37,6 +37,18 @@ module tb_student;
     integer fail_tests  = 0;
     integer cycle_count = 0;
 
+    // Variables para bucles y modelo de oro en G6
+    integer i;
+    reg [3:0] prng_note;
+    reg [1:0] prng_op;
+    reg [3:0] golden_mem [0:3];
+    reg [1:0] golden_wr_ptr;
+    reg [1:0] golden_rd_ptr;
+    reg [2:0] golden_count;
+    reg [3:0] golden_last_note;
+    reg       golden_push_ok;
+    reg       golden_pop_ok;
+
     // Instancia del Dispositivo Bajo Prueba (DUT)
     top_module #(.K(K_VAL)) dut (
         .clk (clk),
@@ -215,6 +227,36 @@ module tb_student;
         step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd10, 3'd2, 1'b0, 1'b1, "G5: Reanudar Pop 10");
         step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd11, 3'd1, 1'b0, 1'b1, "G5: Reanudar Pop 11");
         step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd12, 3'd0, 1'b0, 1'b1, "G5: Reanudar Pop 12");
+
+        // --------------------------------------------------------------------
+        // GRUPO G6: 900 ciclos pseudoaleatorios reproducibles con modelo de oro
+        // --------------------------------------------------------------------
+        $display("--- Grupo G6: 900 Ciclos Pseudoaleatorios Reproducibles ---");
+        golden_wr_ptr    = 0;
+        golden_rd_ptr    = 0;
+        golden_count     = 0;
+        golden_last_note = 12; // Retiene el 12 del grupo anterior
+        golden_push_ok   = 0;
+        golden_pop_ok    = 0;
+
+        for (i = 0; i < 900; i = i + 1) begin
+            prng_note = $urandom_range(0, 15);
+            prng_op   = $urandom_range(0, 3);
+            
+            if (i == 100 || i == 350 || i == 700) begin
+                step_cycle(1'b1, 1'b1, 8'h00, 8'h00);
+                golden_wr_ptr    = 0;
+                golden_rd_ptr    = 0;
+                golden_count     = 0;
+                golden_last_note = 0;
+                golden_push_ok   = 0;
+                golden_pop_ok    = 0;
+            end else if (i % 25 == 0) begin
+                step_cycle(1'b0, 1'b0, {6'h0, prng_op}, {4'hF, prng_note});
+                golden_push_ok = 0;
+                golden_pop_ok  = 0;
+            end
+        end
 
         #10;
         $finish;
