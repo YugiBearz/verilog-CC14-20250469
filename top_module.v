@@ -26,4 +26,17 @@ module top_module #(
     wire pop_cmd  = cmd[1];
     wire [3:0] in_note = data[3:0]; // Los 4 bits altos data[7:4] se ignoran
 
+    // ------------------------------------------------------------------------
+    // Registros internos de almacenamiento y punteros
+    // ------------------------------------------------------------------------
+    reg [3:0] mem [0:3];     // 4 posiciones de 4 bits para notas musicales
+    reg [1:0] wr_ptr;        // Puntero circular de escritura (0..3)
+    reg [1:0] rd_ptr;        // Puntero circular de lectura (0..3)
+    reg [2:0] count;         // Ocupacion de la cola (0..4)
+    reg [3:0] last_note;     // Ultima nota extraida satisfactoriamente
+
+    // Banderas registradas de aceptacion (pulsos de 1 ciclo)
+    reg push_ok;
+    reg pop_ok;
+
 endmodule
