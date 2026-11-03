@@ -18,7 +18,7 @@ check-k5: sim_k5
 	$(VVP) sim_k5
 
 sim_k5: $(SRCS)
-	$(IVERILOG) -g2012 -s tb_student -PK_VAL=5 -o sim_k5 $(SRCS)
+	$(IVERILOG) -g2012 -s tb_student -Ptb_student.K_VAL=5 -o sim_k5 $(SRCS)
 
 lint:
 	$(VERILATOR) --lint-only -Wall top_module.v
