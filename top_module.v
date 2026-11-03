@@ -19,4 +19,11 @@ module top_module #(
     output wire [15:0] y
 );
 
+    // ------------------------------------------------------------------------
+    // Senales de entrada decodificadas
+    // ------------------------------------------------------------------------
+    wire push_cmd = cmd[0];
+    wire pop_cmd  = cmd[1];
+    wire [3:0] in_note = data[3:0]; // Los 4 bits altos data[7:4] se ignoran
+
 endmodule
