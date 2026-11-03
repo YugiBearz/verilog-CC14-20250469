@@ -1,0 +1,38 @@
+================================================================================
+INSTITUTO TECNOLOGICO DE LAS AMERICAS (ITLA)
+CARRERA: TECNOLOGO EN DESARROLLO DE SOFTWARE / SISTEMAS ELECTRONICOS
+ASIGNATURA: SISTEMAS DIGITALES CON FPGA
+DOCENTE: PROF. WILKINS GABRIEL CEDANO DEL ROSARIO
+================================================================================
+SEGUNDO PARCIAL — CODE CHALLENGE CC14 (25 PUNTOS)
+COLA DE NOTAS DE CUATRO POSICIONES (FIFO SINCRONA)
+ESTUDIANTE: URIK CAMILO VALENZUELA FLYNN
+MATRICULA: 20250469
+CORREO INSTITUCIONAL: 20250469@itla.edu.do
+================================================================================
+
+1. DATOS OFICIALES DE ENTREGA
+--------------------------------------------------------------------------------
+* Repositorio de GitHub:
+  https://github.com/YugiBearz/verilog-CC14-20250469
+
+* Rama Principal: 'main'
+
+* Archivos obligatorios incluidos en la raiz del repositorio:
+  - top_module.v  : Implementacion RTL sintetizable de la FIFO sincrona CC14.
+  - tb_student.v   : Banco de pruebas exhaustivo automatizado ciclo a ciclo.
+  - README.md      : Documentacion de arquitectura, fases de avance y reproduccion.
+  - Makefile       : Automatizacion de simulacion (make check / make check-k5) y linter.
+  - AI_LOG.md      : Bitacora de asistencia por IA contemporanea al desarrollo.
+  - docs/          : Analisis teorico de arquitectura en analisis_fifo_cc14.md.
+
+2. RESUMEN DE VERIFICACION FUNCIONAL
+--------------------------------------------------------------------------------
+- Total de comprobaciones ciclo a ciclo : 945 / 945
+- Pruebas Pasadas                       : 945 (100% PASS)
+- Pruebas Falladas                      : 0 errores
+- Valores de K evaluados                : K=3 y K=5 (ambos 100% PASS)
+- Linter Verilator                      : Cero errores sintacticos
+- Sintetizabilidad                      : Compatible Verilog 2001, sin latches,
+                                          reloj unico clk, reset sincrono prioritario.
+================================================================================
