@@ -110,6 +110,40 @@ module tb_student;
         // Reset inicial
         step_cycle(1'b1, 1'b1, 8'h00, 8'h00);
         check_outputs(4'd0, 3'd0, 1'b0, 1'b0, "Reset Inicial");
+
+        // --------------------------------------------------------------------
+        // Ejemplo verificable del mandato:
+        // Push 5, push 9, pop: ultima nota=5 y ocupacion=1.
+        // Despues pop devuelve 9 y ocupacion=0; pop adicional no cambia ultima nota.
+        // --------------------------------------------------------------------
+        $display("--- Verificando Ejemplo del Mandato Oficial ---");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'hA5);
+        check_outputs(4'd0, 3'd1, 1'b1, 1'b0, "Ejemplo: Push 5");
+
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h39);
+        check_outputs(4'd0, 3'd2, 1'b1, 1'b0, "Ejemplo: Push 9");
+
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00);
+        check_outputs(4'd5, 3'd1, 1'b0, 1'b1, "Ejemplo: Pop -> 5, count=1");
+
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00);
+        check_outputs(4'd9, 3'd0, 1'b0, 1'b1, "Ejemplo: Pop -> 9, count=0");
+
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00);
+        check_outputs(4'd9, 3'd0, 1'b0, 1'b0, "Ejemplo: Pop adicional en vacio");
+
+        // --------------------------------------------------------------------
+        // GRUPO G1: Reset con FIFO llena y ultima nota distinta de cero
+        // --------------------------------------------------------------------
+        $display("--- Grupo G1: Reset con FIFO llena y ultima nota != 0 ---");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h01); check_outputs(4'd9, 3'd1, 1'b1, 1'b0, "G1: Push 1");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h02); check_outputs(4'd9, 3'd2, 1'b1, 1'b0, "G1: Push 2");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h03); check_outputs(4'd9, 3'd3, 1'b1, 1'b0, "G1: Push 3");
+        step_cycle(1'b0, 1'b1, 8'h01, 8'h04); check_outputs(4'd9, 3'd4, 1'b1, 1'b0, "G1: Push 4 (FIFO LLENA)");
+
+        step_cycle(1'b1, 1'b1, 8'h03, 8'h0F);
+        check_outputs(4'd0, 3'd0, 1'b0, 1'b0, "G1: Reset con FIFO llena y last_note!=0");
+
         #10;
         $finish;
     end
