@@ -89,12 +89,45 @@ module top_module #(
                         // Si count == 4: push rechazado (push_ok = 0)
                     end
 
-                    default: begin
-                        // Transferencias simultaneas en siguiente commit
+                    2'b11: begin
+                        // Transferencia simultanea (PUSH y POP activos):
+                        if (count == 3'd0) begin
+                            // Caso cola vacia: "Con cola vacia y push=pop=1 solo se acepta push; no hay bypass."
+                            mem[wr_ptr] <= in_note;
+                            wr_ptr      <= wr_ptr + 1'b1;
+                            count       <= 3'd1;
+                            push_ok     <= 1'b1;
+                            pop_ok      <= 1'b0;
+                        end else begin
+                            // Cola no vacia (count > 0):
+                            // Pop siempre se acepta porque hay elementos.
+                            // Push siempre se acepta porque o habia espacio o se libera uno por el pop.
+                            // Si count == 4: se extrae la mas antigua y se inserta la nueva, conservando count = 4.
+                            // Si 0 < count < 4: count se conserva constante.
+                            last_note   <= mem[rd_ptr];
+                            rd_ptr      <= rd_ptr + 1'b1;
+                            mem[wr_ptr] <= in_note;
+                            wr_ptr      <= wr_ptr + 1'b1;
+                            // count queda inalterado (count + 1 - 1 = count)
+                            push_ok     <= 1'b1;
+                            pop_ok      <= 1'b1;
+                        end
                     end
                 endcase
             end
+            // Si en == 0: mem, wr_ptr, rd_ptr, count y last_note conservan su valor.
+            // push_ok y pop_ok se borraron a 0 arriba.
         end
     end
+
+    // ------------------------------------------------------------------------
+    // Empaquetado de salida
+    // ------------------------------------------------------------------------
+    // y[3:0]  = ultima nota extraida
+    // y[6:4]  = ocupacion actual (0..4)
+    // y[7]    = push_ok
+    // y[8]    = pop_ok
+    // y[15:9] = 0 (bits no usados valen cero)
+    assign y = {7'b0000000, pop_ok, push_ok, count, last_note};
 
 endmodule
