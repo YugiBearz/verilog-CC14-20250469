@@ -201,6 +201,21 @@ module tb_student;
         step_cycle(1'b0, 1'b1, 8'h03, 8'h0C);
         check_outputs(4'd8, 3'd4, 1'b1, 1'b1, "G4: Push+Pop en lleno (count=4)");
 
+        // --------------------------------------------------------------------
+        // GRUPO G5: Pausa con en=0 y borrado estricto de aceptaciones
+        // --------------------------------------------------------------------
+        $display("--- Grupo G5: Pausa (en=0) y borrado de aceptaciones ---");
+        step_cycle(1'b0, 1'b0, 8'h03, 8'h0D);
+        check_outputs(4'd8, 3'd4, 1'b0, 1'b0, "G5: Pausa con en=0 (aceptaciones a cero)");
+
+        step_cycle(1'b0, 1'b0, 8'h01, 8'h0E);
+        check_outputs(4'd8, 3'd4, 1'b0, 1'b0, "G5: Pausa segundo ciclo");
+
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd9,  3'd3, 1'b0, 1'b1, "G5: Reanudar Pop 9");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd10, 3'd2, 1'b0, 1'b1, "G5: Reanudar Pop 10");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd11, 3'd1, 1'b0, 1'b1, "G5: Reanudar Pop 11");
+        step_cycle(1'b0, 1'b1, 8'h02, 8'h00); check_outputs(4'd12, 3'd0, 1'b0, 1'b1, "G5: Reanudar Pop 12");
+
         #10;
         $finish;
     end
