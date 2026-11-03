@@ -59,7 +59,28 @@ module top_module #(
             pop_ok  <= 1'b0;
 
             if (en) begin
-                // Operaciones PUSH y POP a implementar en siguientes commits
+                // Decision basada en la ocupacion previa al flanco actual
+                case ({push_cmd, pop_cmd})
+                    2'b00: begin
+                        // Sin comandos: cola y ultima nota se conservan intactas
+                    end
+
+                    2'b01: begin
+                        // Solo POP solicitado:
+                        // Se acepta si la cola no estaba vacia (count > 0)
+                        if (count > 3'd0) begin
+                            last_note <= mem[rd_ptr];
+                            rd_ptr    <= rd_ptr + 1'b1;
+                            count     <= count - 1'b1;
+                            pop_ok    <= 1'b1;
+                        end
+                        // Si count == 0: pop rechazado (pop_ok = 0, last_note retiene su valor)
+                    end
+
+                    default: begin
+                        // PUSH y transferencias simultaneas en siguientes commits
+                    end
+                endcase
             end
         end
     end
