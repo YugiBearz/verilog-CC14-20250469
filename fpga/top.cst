@@ -1,0 +1,59 @@
+// ============================================================================
+// Asignatura: Sistemas Digitales con FPGA (ITLA)
+// Estudiante: Urik Camilo Valenzuela Flynn · Matricula: 20250469
+// Reto CC14: Cola de notas de cuatro posiciones (FIFO sincrona)
+// Tarjeta:    Sipeed Tang Primer 25K (Gowin GW5A-LV25MG121)
+// Archivo:    top.cst (Gowin Physical Constraints)
+// ============================================================================
+
+// Reloj maestro de 50 MHz (Pin E2)
+IO_LOC "sys_clk" E2;
+IO_PORT "sys_clk" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+
+// Pulsador de Reset (Activo en bajo, Pull-up interno, Dock F5)
+IO_LOC "btn_rst_n" G5;
+IO_PORT "btn_rst_n" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// Pulsador / Switch de Enable (Dock F5)
+IO_LOC "btn_en" F5;
+IO_PORT "btn_en" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+// Switches de comando: PUSH (cmd[0]) y POP (cmd[1]) (Dock F5)
+IO_LOC "sw_push" H8;
+IO_PORT "sw_push" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_LOC "sw_pop" H7;
+IO_PORT "sw_pop" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+// Switches de nota entrante: sw_note[3:0] (Dock G11 Top Row)
+IO_LOC "sw_note[3]" C11;
+IO_PORT "sw_note[3]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_LOC "sw_note[2]" B11;
+IO_PORT "sw_note[2]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_LOC "sw_note[1]" D11;
+IO_PORT "sw_note[1]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_LOC "sw_note[0]" G11;
+IO_PORT "sw_note[0]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+// Salidas a LEDs: Ultima nota extraida y[3:0] (Dock A11 Top Row)
+IO_LOC "led_note[3]" A11;
+IO_PORT "led_note[3]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "led_note[2]" E11;
+IO_PORT "led_note[2]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "led_note[1]" K11;
+IO_PORT "led_note[1]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "led_note[0]" L5;
+IO_PORT "led_note[0]" IO_TYPE=LVCMOS33 DRIVE=8;
+
+// Salidas a LEDs: Ocupacion de la cola y[6:4] (Dock A11 Bottom Row)
+IO_LOC "led_count[2]" E10;
+IO_PORT "led_count[2]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "led_count[1]" L11;
+IO_PORT "led_count[1]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "led_count[0]" A10;
+IO_PORT "led_count[0]" IO_TYPE=LVCMOS33 DRIVE=8;
+
+// Salidas a LEDs: Banderas de aceptacion de pulso (Dock G11 Bottom Row)
+IO_LOC "led_push_ok" C10;
+IO_PORT "led_push_ok" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "led_pop_ok" B10;
+IO_PORT "led_pop_ok" IO_TYPE=LVCMOS33 DRIVE=8;
