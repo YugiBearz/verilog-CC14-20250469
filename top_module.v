@@ -8,6 +8,8 @@
 
 `timescale 1ns / 1ps
 
+/* verilator lint_off UNUSEDPARAM */
+/* verilator lint_off UNUSEDSIGNAL */
 module top_module #(
     parameter integer K = 3
 )(
@@ -131,3 +133,5 @@ module top_module #(
     assign y = {7'b0000000, pop_ok, push_ok, count, last_note};
 
 endmodule
+/* verilator lint_on UNUSEDPARAM */
+/* verilator lint_on UNUSEDSIGNAL */
