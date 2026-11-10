@@ -103,3 +103,7 @@ vvp sim
 | `3b79aa0` | 2026-11-03 | `docs: actualizar README con instrucciones de ejecucion, matriz 100% PASS y cierre de bitacora` | Consolidación de instrucciones y matriz de pruebas superadas al 100%. |
 | `cc3fae8` | 2026-11-03 | `docs: generar archivo oficial de entregables ENTREGABLES_CC14_20250469.txt` | Resumen oficial con hashes y datos institucionales de entrega. |
 | `2bf6925` | 2026-11-07 | `feat(fpga): implementar sincronizador 2ff parametrizable contra metaestabilidad` | Creación de `sync2ff.v` para acondicionamiento de entradas mecánicas. |
+| `0f05eab` | 2026-11-10 | `feat(fpga): implementar modulo de integracion fisica tang_top_cc14 con proteccion 2ff` | Top físico conectando entradas a 8 canales sync2ff y salidas a LEDs. |
+| `b451f75` | 2026-11-10 | `chore(fpga): configurar restricciones CST de pines PMOD y restricciones SDC a 50 MHz` | Asignación de pines PMOD Dock F5, G11, A11 y restricción SDC a 50 MHz. |
+| `730b662` | 2026-11-10 | `build(fpga): automatizar flujo de sintesis Gowin en modo batch y tareas de grabacion` | Script run_gowin.tcl y reglas Makefile (fpga, prog, flash) para Tang Primer 25K. |
+| `8782b7e` | 2026-11-10 | `docs(release): validar bitstream en hardware, actualizar informe y registrar evidencias fisicas` | Reporte de síntesis (28 LUTs, 45 FFs, 0 latches), bitstream y cierre evaluable. |
